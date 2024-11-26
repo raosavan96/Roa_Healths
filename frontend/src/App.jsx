@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Home from "./Pages/Home";
+import Doctors from "./Pages/Doctors";
+import About from "./Pages/About";
+import Login from "./Pages/Login";
+import { Contect } from "./Pages/Contect";
+import MyProfile from "./Pages/MyProfile";
+import MyAppoinment from "./Pages/MyAppoinment";
+import { Appoinment } from "./Pages/Appoinment";
+import Navbar from "./Components/Navbar";
+import { Footer } from "./Components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="mx-4 sm:mx-[10%]">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/doctors" element={<Doctors />} />
+        <Route path="/doctors/:speciality" element={<Doctors />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/contect" element={<Contect />} />
+        <Route path="/my-profile" element={<MyProfile />} />
+        <Route path="/my-appoinment" element={<MyAppoinment />} />
+        <Route path="/appoinment/:docId" element={<Appoinment />} />
+      </Routes>
+      <Footer/>
+    </div>
+  );
 }
 
-export default App
+export default App;
