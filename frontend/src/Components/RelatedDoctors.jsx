@@ -1,23 +1,29 @@
-import React, { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
+import { useNavigate } from "react-router-dom";
 
-export const TopDoctors = () => {
-  const navig = useNavigate();
+export const RelatedDoctors = ({ docId, speciality }) => {
   const { doctors } = useContext(AppContext);
+  const [relDoctor, setRelDoctor] = useState([]);
+  const navig = useNavigate();
+
+  const fetchRelatedDoc = async () => {
+    const relDoc = await doctors.filter(
+      (doc) => doc.speciality === speciality && doc._id !== docId
+    );
+    setRelDoctor(relDoc);
+  };
+
+  useEffect(() => {
+    fetchRelatedDoc();
+  }, [speciality, docId, doctors]);
 
   return (
     <>
-      <div
-        id="speciality"
-        className="flex flex-col items-center pt-16 pb-10 text-gray-800"
-      >
-        <h1 className="text-3xl font-mono">Top Doctors to Book</h1>
-        <p className="sm:w-1/3 text-center text-sm mt-3">
-          Simply browse through our extensive list of trusted doctors.
-        </p>
-        <div className="w-full grid grid-cols-auto mt-5 gap-4 pt-5 gap-y-6 px-3 sm:px-0">
-          {doctors.slice(0, 10).map((value, index) => (
+      <div className="mt-10">
+        <h3>Related Doctors</h3>
+        <div className="w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0">
+          {relDoctor.slice(0, 5).map((value, index) => (
             <div
               onClick={() => {
                 navig(`/appoinment/${value._id}`);
@@ -39,17 +45,6 @@ export const TopDoctors = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div>
-          <button
-            onClick={() => {
-              navig("/doctors");
-              scrollTo(0, 0);
-            }}
-            className="bg-blue-100 text-gray-600 px-12 py-3 hover:scale-105 transition-all duration-500 rounded-full mt-10"
-          >
-            more
-          </button>
         </div>
       </div>
     </>

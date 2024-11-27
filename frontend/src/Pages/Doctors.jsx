@@ -34,7 +34,7 @@ function Doctors() {
                   : navig("/doctors/General physician")
               }
               className={`w-[94vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === "General physician" ? "bg-blue-100" : ""
+                speciality === "General physician" ? "bg-blue-100 text-black" : ""
               }`}
             >
               General physician
@@ -46,7 +46,7 @@ function Doctors() {
                   : navig("/doctors/Gynecologist")
               }
               className={`w-[94vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === "Gynecologist" ? "bg-blue-100" : ""
+                speciality === "Gynecologist" ? "bg-blue-100 text-black" : ""
               }`}
             >
               Gynecologist
@@ -58,7 +58,7 @@ function Doctors() {
                   : navig("/doctors/Dermatologist")
               }
               className={`w-[94vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === "Dermatologist" ? "bg-blue-100" : ""
+                speciality === "Dermatologist" ? "bg-blue-100 text-black" : ""
               }`}
             >
               Dermatologist
@@ -70,7 +70,7 @@ function Doctors() {
                   : navig("/doctors/Pediatricians")
               }
               className={`w-[94vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === "Pediatricians" ? "bg-blue-100" : ""
+                speciality === "Pediatricians" ? "bg-blue-100 text-black" : ""
               }`}
             >
               Pediatricians
@@ -82,7 +82,7 @@ function Doctors() {
                   : navig("/doctors/Neurologist")
               }
               className={`w-[94vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
-                speciality === "Neurologist" ? "bg-blue-100" : ""
+                speciality === "Neurologist" ? "bg-blue-100 text-black" : ""
               }`}
             >
               Neurologist
