@@ -6,6 +6,7 @@ function Doctors() {
   const navig = useNavigate();
   const { speciality } = useParams();
   const [filterDoc, setFilterDoc] = useState([]);
+  const [filter, setFilter] = useState(false);
   const { doctors } = useContext(AppContext);
 
   const applyFilter = () => {
@@ -28,13 +29,27 @@ function Doctors() {
           Browse through the doctors speciality
         </p>
         <div className="flex w-full flex-col sm:flex-row items-start gap-5 mt-5 ">
-          <div className="flex w-1/5 flex-col gap-4 text-sm text-gray-600">
+          <div>
+            <button
+              onClick={() => setFilter((prev) => !prev)}
+              className="bg-primary sm:hidden text-white px-5 active:bg-white active:text-primary rounded py-1 border active:border-primary"
+            >
+              Filter
+            </button>
+          </div>
+
+          <div
+            className={`flex w-1/5  flex-col gap-4 text-sm text-gray-600 ${
+              filter ? "flex" : "hidden sm:flex"
+            }`}
+          >
             <p
-              onClick={() =>
+              onClick={() => {
                 speciality === "General physician"
                   ? navig("/doctors")
-                  : navig("/doctors/General physician")
-              }
+                  : navig("/doctors/General physician");
+                setFilter(false);
+              }}
               className={`w-[90vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
                 speciality === "General physician"
                   ? "bg-blue-100 text-black"
@@ -44,11 +59,12 @@ function Doctors() {
               General physician
             </p>
             <p
-              onClick={() =>
+              onClick={() => {
                 speciality === "Gynecologist"
                   ? navig("/doctors")
-                  : navig("/doctors/Gynecologist")
-              }
+                  : navig("/doctors/Gynecologist");
+                setFilter(false);
+              }}
               className={`w-[90vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
                 speciality === "Gynecologist" ? "bg-blue-100 text-black" : ""
               }`}
@@ -56,11 +72,12 @@ function Doctors() {
               Gynecologist
             </p>
             <p
-              onClick={() =>
+              onClick={() => {
                 speciality === "Dermatologist"
                   ? navig("/doctors")
-                  : navig("/doctors/Dermatologist")
-              }
+                  : navig("/doctors/Dermatologist");
+                setFilter(false);
+              }}
               className={`w-[90vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
                 speciality === "Dermatologist" ? "bg-blue-100 text-black" : ""
               }`}
@@ -68,11 +85,12 @@ function Doctors() {
               Dermatologist
             </p>
             <p
-              onClick={() =>
+              onClick={() => {
                 speciality === "Pediatricians"
                   ? navig("/doctors")
-                  : navig("/doctors/Pediatricians")
-              }
+                  : navig("/doctors/Pediatricians");
+                setFilter(false);
+              }}
               className={`w-[90vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
                 speciality === "Pediatricians" ? "bg-blue-100 text-black" : ""
               }`}
@@ -80,11 +98,12 @@ function Doctors() {
               Pediatricians
             </p>
             <p
-              onClick={() =>
+              onClick={() => {
                 speciality === "Neurologist"
                   ? navig("/doctors")
-                  : navig("/doctors/Neurologist")
-              }
+                  : navig("/doctors/Neurologist");
+                setFilter(false);
+              }}
               className={`w-[90vw] sm:w-auto ps-1 py-1.5 border border-gray-300 rounded transition-all cursor-pointer ${
                 speciality === "Neurologist" ? "bg-blue-100 text-black" : ""
               }`}

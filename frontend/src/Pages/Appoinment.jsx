@@ -65,17 +65,17 @@ export const Appoinment = () => {
     }
   };
 
-  function nextScl() {
-    if (docSlot.length > scrolls) {
+  const nextScl = () => {
+    if (docSlot.length - 1 > scrolls) {
       setScrolls((prev) => prev + 1);
     }
-  }
+  };
 
-  function prevScl() {
+  const prevScl = () => {
     if (scrolls !== 0) {
       setScrolls((prev) => prev - 1);
     }
-  }
+  };
 
   useEffect(() => {
     console.log(docSlot);
@@ -143,7 +143,10 @@ export const Appoinment = () => {
                 docSlot.map((value, index) => (
                   <div
                     key={index}
-                    onClick={() => setSlotIndex(index)}
+                    onClick={() => {
+                      setSlotIndex(index);
+                      setScrolls(0);
+                    }}
                     className={`text-center py-4 md:py-6 min-w-13 md:min-w-16 px-2 md:hover:translate-y-[-7px] transition-all duration-500  rounded-full cursor-pointer ${
                       slotIndex === index
                         ? "bg-primary text-white"
@@ -165,7 +168,7 @@ export const Appoinment = () => {
               <div className="w-full overflow-x-scroll mt-4 ">
                 <div
                   className="flex items-center gap-3 w-full md:py-7 md:hover:translate-y-[-7px]  transition-all duration-1000"
-                  style={{ transform: `translateX(-${scrolls * 28}%)` }}
+                  style={{ transform: `translateX(-${scrolls * 38}%)` }}
                 >
                   {docSlot.length &&
                     docSlot[slotIndex].map((value, index) => (
@@ -183,20 +186,22 @@ export const Appoinment = () => {
                     ))}
                 </div>
               </div>
-              <div className="-top-10 absolute flex gap-2 right-0 ">
-                <button
-                  onClick={prevScl}
-                  className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
-                >
-                  <CiSquareChevLeft />
-                </button>
-                <button
-                  onClick={nextScl}
-                  className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
-                >
-                  <CiSquareChevRight />
-                </button>
-              </div>
+              {docSlot[slotIndex].length > 5 ? (
+                <div className="-top-10 absolute flex gap-2 right-0 ">
+                  <button
+                    onClick={prevScl}
+                    className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
+                  >
+                    <CiSquareChevLeft />
+                  </button>
+                  <button
+                    onClick={nextScl}
+                    className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
+                  >
+                    <CiSquareChevRight />
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             <div className="flex justify-center sm:justify-start">
