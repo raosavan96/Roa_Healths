@@ -67,6 +67,8 @@ function Navbar() {
             Create account
           </button>
         )}
+
+        <img className="w-6 md:hidden" src={assets.menu_icon} alt="" />
       </div>
     </div>
   );

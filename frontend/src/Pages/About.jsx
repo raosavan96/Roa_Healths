@@ -5,9 +5,9 @@ function About() {
   return (
     <>
       <div>
-        <div className="text-center text-2xl pt-10 text-gray-500">
+        <div className="text-center text-2xl pt-10 md:mb-0 mb-5 text-gray-500">
           <h3>
-            ABOUT <span className="text-gray-700 font-medium">US</span>
+            ABOUT <span className="text-gray-700  font-medium">US</span>
           </h3>
         </div>
         <div className="flex flex-col md:flex-row gap-12">

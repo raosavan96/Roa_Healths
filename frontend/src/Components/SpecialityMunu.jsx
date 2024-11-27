@@ -9,8 +9,8 @@ export const SpecialityMunu = () => {
         id="speciality"
         className="flex flex-col items-center pt-16 pb-10 text-gray-800"
       >
-        <h1 className="text-3xl font-mono">Find by Speciality</h1>
-        <p className="sm:w-1/3 text-center text-sm mt-3">
+        <h1 className="text-xl md:text-3xl font-mono">Find by Speciality</h1>
+        <p className="sm:w-1/3 text-center text-xs md:text-sm mt-3">
           Simply browse through our extensive list of trusted doctors, schedule
           your appointment hassle-free.
         </p>

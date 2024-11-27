@@ -19,12 +19,12 @@ function MyProfile() {
   return (
     <>
       <div>
-        <div className="max-w-lg flex flex-col gap-5 text-sm">
-          <img className="w-52 rounded" src={userData.image} alt=" " />
+        <div className="max-w-lg sm:mt-0 mt-5 flex flex-col gap-5 text-sm">
+          <img className="sm:w-52  rounded" src={userData.image} alt=" " />
           <div>
             {isEdit ? (
               <input
-                className="bg-gray-100 text-3xl font-medium max-w-56 md:max-w-80 mt-4 mb-3"
+                className="bg-gray-100 text-xl md:text-3xl font-medium max-w-56 md:max-w-80 mt-4 mb-3"
                 type="text"
                 value={userData.name}
                 onChange={(e) =>
@@ -32,7 +32,7 @@ function MyProfile() {
                 }
               />
             ) : (
-              <p className="font-medium text-3xl text-neutral-800 mt-4">
+              <p className="font-medium text-xl md:text-3xl text-neutral-800 mt-4">
                 {userData.name}
               </p>
             )}

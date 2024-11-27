@@ -12,13 +12,13 @@ export const SecBanner = () => {
             <p>Book Appointment</p>
             <p className="mt-4">With 100+ Trusted Doctors</p>
           </div>
-          <div>
+          <div className="flex justify-center md:justify-start">
             <button
               onClick={() => {
                 navig("/login");
                 scrollTo(0, 0);
               }}
-              className="bg-white text-sm sm:text-base text-gray-600 px-8 py-3 rounded-full mt-6 hover:scale-105 transition-all duration-500"
+              className="bg-white text-sm sm:text-base text-gray-600 px-8 py-2 md:py-3 rounded-full mt-6 hover:scale-105 transition-all duration-500"
             >
               Create account
             </button>

@@ -13,7 +13,7 @@ import { Footer } from "./Components/Footer";
 
 function App() {
   return (
-    <div className="mx-4 sm:mx-[10%]">
+    <div className="mx-4 sm:mx-[10%] overflow-hidden">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -93,22 +93,22 @@ export const Appoinment = () => {
     doctor && (
       <>
         <div className="mt-9">
-          <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex flex-col md:flex-row gap-4">
             <div>
               <img
-                className="bg-primary w-full sm:max-w-72 rounded-lg"
+                className="bg-primary w-full mx-auto sm:max-w-72 rounded-lg"
                 src={doctor?.image}
                 alt=""
               />
             </div>
-            <div className="flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0">
+            <div className="flex-1 border border-gray-400 rounded-lg p-3 md:p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-40px] sm:mt-0">
               <div className="flex items-center gap-2">
-                <h4 className="text-2xl font-medium text-gray-900">
+                <h4 className="text-xl md:text-2xl font-medium text-gray-900">
                   {doctor?.name}
                 </h4>
-                <img className="w-5" src={assets.verified_icon} alt="" />
+                <img className="md:w-5 w-4" src={assets.verified_icon} alt="" />
               </div>
-              <div className="flex items-center gap-3 text-sm mt-1 text-gray-600">
+              <div className="flex items-center gap-3 text-xs md:text-sm mt-1 text-gray-600">
                 <p>
                   {doctor?.degree} - {doctor?.speciality}{" "}
                 </p>
@@ -118,7 +118,8 @@ export const Appoinment = () => {
               </div>
               <div>
                 <p className="flex items-center gap-1 text-sm font-medium text-gray-900 mt-3">
-                  About <img src={assets.info_icon} alt="" />
+                  About{" "}
+                  <img className="w-3 md:w-4" src={assets.info_icon} alt="" />
                 </p>
                 <p className="text-sm text-gray-500 max-w-[700px] mt-1">
                   {doctor?.about}
@@ -137,20 +138,25 @@ export const Appoinment = () => {
           <div className="sm:ms-72 sm:ps-4 mt-9 font-medium text-gray-700">
             <p>Booking slots</p>
 
-            <div className="flex gap-3 px-4 py-7 items-center w-full overflow-x-scroll ">
+            <div className="flex gap-3 px-0 md:px-4 py-7 items-center w-full overflow-x-scroll ">
               {docSlot.length &&
                 docSlot.map((value, index) => (
                   <div
                     key={index}
                     onClick={() => setSlotIndex(index)}
-                    className={`text-center py-6 min-w-16 hover:translate-y-[-7px] transition-all duration-500  rounded-full cursor-pointer ${
+                    className={`text-center py-4 md:py-6 min-w-13 md:min-w-16 px-2 md:hover:translate-y-[-7px] transition-all duration-500  rounded-full cursor-pointer ${
                       slotIndex === index
                         ? "bg-primary text-white"
                         : "border border-gray-300 hover:bg-blue-50 hover:border-blue-200"
                     }`}
                   >
-                    <p>{value[0] && weekDay[value[0].datetime.getDay()]}</p>
-                    <p>{value[0] && value[0].datetime.getDate()}</p>
+                    <p className="text-xs md:text-base">
+                      {value[0] && weekDay[value[0].datetime.getDay()]}
+                    </p>
+                    <p className="text-xs md:text-base">
+                      {" "}
+                      {value[0] && value[0].datetime.getDate()}
+                    </p>
                   </div>
                 ))}
             </div>
@@ -158,14 +164,14 @@ export const Appoinment = () => {
             <div className="relative">
               <div className="w-full overflow-x-scroll mt-4 ">
                 <div
-                  className="flex items-center gap-3 w-full py-7 hover:translate-y-[-7px]  transition-all duration-1000"
+                  className="flex items-center gap-3 w-full md:py-7 md:hover:translate-y-[-7px]  transition-all duration-1000"
                   style={{ transform: `translateX(-${scrolls * 28}%)` }}
                 >
                   {docSlot.length &&
                     docSlot[slotIndex].map((value, index) => (
                       <p
                         onClick={() => setSlotTime(value.time)}
-                        className={`text-sm font-light hover:translate-y-[-5px] transition-all duration-500 flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${
+                        className={`md:text-sm text-xs font-light md:hover:translate-y-[-5px] transition-all duration-500 flex-shrink-0 px-3 py-1 md:px-5 md:py-2 rounded-full cursor-pointer ${
                           value.time === slotTime
                             ? "bg-primary text-white "
                             : "text-gray-400 border border-gray-300"
@@ -193,7 +199,7 @@ export const Appoinment = () => {
               </div>
             </div>
 
-            <div>
+            <div className="flex justify-center sm:justify-start">
               <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
                 Book an appointment
               </button>
