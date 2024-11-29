@@ -10,8 +10,8 @@ import AddDoctor from "./pages/admin/AddDoctor";
 import DoctorList from "./pages/admin/DoctorList";
 
 function App() {
-  const { aToken } = useContext(AdminContext);
-  return aToken ? (
+  const { atoken } = useContext(AdminContext);
+  return atoken ? (
     <>
       <div>
         <div>

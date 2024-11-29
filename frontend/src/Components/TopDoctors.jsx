@@ -29,13 +29,25 @@ export const TopDoctors = () => {
               <img className="bg-blue-50" src={value.image} alt="" />
               <div className="p-4">
                 <div className="flex items-center gap-2 text-xs md:text-sm text-center text-green-500">
-                  <p className="w-2 h-2 rounded-full bg-green-500"></p>
-                  <p>Available</p>
+                  {value.available === true && (
+                    <>
+                      <p className="w-2 h-2 rounded-full bg-green-500"></p>
+                      <p>Available</p>
+                    </>
+                  )}
+                  {value.available === false && (
+                    <>
+                      <p className="w-2 h-2 rounded-full bg-red-600"></p>
+                      <p className="text-red-600">Unvailable</p>
+                    </>
+                  )}
                 </div>
                 <p className="text-gray-900 text-sm md:text-lg font-medium">
                   {value.name}
                 </p>
-                <p className="text-gray-600 text-xs md:text-sm">{value.speciality}</p>
+                <p className="text-gray-600 text-xs md:text-sm">
+                  {value.speciality}
+                </p>
               </div>
             </div>
           ))}

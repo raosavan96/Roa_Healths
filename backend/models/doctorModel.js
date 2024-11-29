@@ -15,15 +15,15 @@ const doctorSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    // image: {
-    //   type: String,
-    //   required: true
-    // },
+    image: {
+      type: String,
+      required: true
+    },
     speciality: {
       type: String,
       required: true
     },
-    degree: {
+    education: {
       type: String,
       required: true
     },
@@ -59,5 +59,6 @@ const doctorSchema = new mongoose.Schema(
   { minimize: false }
 );
 
+// Fixing the model export issue
 module.exports =
-  mongoose.model.doctor || mongoose.model("doctor", doctorSchema);
+  mongoose.models.doctor || mongoose.model("doctor", doctorSchema);

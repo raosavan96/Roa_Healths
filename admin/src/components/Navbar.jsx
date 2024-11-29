@@ -4,13 +4,13 @@ import { AdminContext } from "../context/AdminContext";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const { aToken, setAtoken } = useContext(AdminContext);
+  const { atoken, setAtoken } = useContext(AdminContext);
   const navig = useNavigate();
 
   const logOut = () => {
     navig("/");
-    aToken && setAtoken("");
-    aToken && localStorage.removeItem("aToken");
+    atoken && setAtoken("");
+    atoken && localStorage.removeItem("atoken");
   };
   return (
     <>
@@ -18,7 +18,7 @@ const Navbar = () => {
         <div className="flex items-center gap-5 text-sm">
           <img className="w-16 cursor-pointer" src={assets.admin_logo} alt="" />
           <p className="border px-2 rounded-full py-0.5  text-gray-700">
-            {aToken ? "Admin" : "Doctor"}
+            {atoken ? "Admin" : "Doctor"}
           </p>
         </div>
         <button

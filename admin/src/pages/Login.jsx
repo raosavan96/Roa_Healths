@@ -23,7 +23,7 @@ const Login = () => {
         );
 
         if (data.success) {
-          localStorage.setItem("aToken", data.token);
+          localStorage.setItem("atoken", data.token);
           setAtoken(data.token);
           toast.success(data.message);
         } else {

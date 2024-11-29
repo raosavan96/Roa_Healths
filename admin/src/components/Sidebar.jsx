@@ -4,11 +4,11 @@ import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 
 const Sidebar = () => {
-  const { aToken } = useContext(AdminContext);
+  const { atoken } = useContext(AdminContext);
   return (
     <>
       <div className="min-h-screen bg-white border-t">
-        {aToken && (
+        {atoken && (
           <ul className="text-gray-600 bg-white border-r">
             <NavLink
               className={({ isActive }) =>

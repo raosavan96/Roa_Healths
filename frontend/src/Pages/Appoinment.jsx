@@ -110,7 +110,7 @@ export const Appoinment = () => {
               </div>
               <div className="flex items-center gap-3 text-xs md:text-sm mt-1 text-gray-600">
                 <p>
-                  {doctor?.degree} - {doctor?.speciality}{" "}
+                  {doctor?.education} - {doctor?.speciality}{" "}
                 </p>
                 <button className="py-0.5 px-2 border text-xs rounded-full">
                   {doctor?.experience}
@@ -138,77 +138,87 @@ export const Appoinment = () => {
           <div className="sm:ms-72 sm:ps-4 mt-9 font-medium text-gray-700">
             <p>Booking slots</p>
 
-            <div className="flex gap-3 px-0 md:px-4 py-7 items-center w-full overflow-x-scroll ">
-              {docSlot.length &&
-                docSlot.map((value, index) => (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      setSlotIndex(index);
-                      setScrolls(0);
-                    }}
-                    className={`text-center py-4 md:py-6 min-w-13 md:min-w-16 px-2 md:hover:translate-y-[-7px] transition-all duration-500  rounded-full cursor-pointer ${
-                      slotIndex === index
-                        ? "bg-primary text-white"
-                        : "border border-gray-300 hover:bg-blue-50 hover:border-blue-200"
-                    }`}
-                  >
-                    <p className="text-xs md:text-base">
-                      {value[0] && weekDay[value[0].datetime.getDay()]}
-                    </p>
-                    <p className="text-xs md:text-base">
-                      {" "}
-                      {value[0] && value[0].datetime.getDate()}
-                    </p>
-                  </div>
-                ))}
-            </div>
-
-            <div className="relative">
-              <div className="w-full overflow-x-scroll mt-4 ">
-                <div
-                  className="flex items-center gap-3 w-full md:py-7 md:hover:translate-y-[-7px]  transition-all duration-1000"
-                  style={{ transform: `translateX(-${scrolls * 38}%)` }}
-                >
+            {doctor.available === true ? (
+              <>
+                <div className="flex gap-3 px-0 md:px-4 py-7 items-center w-full overflow-x-scroll ">
                   {docSlot.length &&
-                    docSlot[slotIndex].map((value, index) => (
-                      <p
-                        onClick={() => setSlotTime(value.time)}
-                        className={`md:text-sm text-xs font-light md:hover:translate-y-[-5px] transition-all duration-500 flex-shrink-0 px-3 py-1 md:px-5 md:py-2 rounded-full cursor-pointer ${
-                          value.time === slotTime
-                            ? "bg-primary text-white "
-                            : "text-gray-400 border border-gray-300"
-                        }`}
+                    docSlot.map((value, index) => (
+                      <div
                         key={index}
+                        onClick={() => {
+                          setSlotIndex(index);
+                          setScrolls(0);
+                        }}
+                        className={`text-center py-4 md:py-6 min-w-13 md:min-w-16 px-2 md:hover:translate-y-[-7px] transition-all duration-500  rounded-full cursor-pointer ${
+                          slotIndex === index
+                            ? "bg-primary text-white"
+                            : "border border-gray-300 hover:bg-blue-50 hover:border-blue-200"
+                        }`}
                       >
-                        {value.time.toLowerCase()}
-                      </p>
+                        <p className="text-xs md:text-base">
+                          {value[0] && weekDay[value[0].datetime.getDay()]}
+                        </p>
+                        <p className="text-xs md:text-base">
+                          {" "}
+                          {value[0] && value[0].datetime.getDate()}
+                        </p>
+                      </div>
                     ))}
                 </div>
-              </div>
-              {docSlot[slotIndex].length > 5 ? (
-                <div className="-top-10 absolute flex gap-2 right-0 ">
-                  <button
-                    onClick={prevScl}
-                    className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
-                  >
-                    <CiSquareChevLeft />
-                  </button>
-                  <button
-                    onClick={nextScl}
-                    className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
-                  >
-                    <CiSquareChevRight />
+
+                <div className="relative">
+                  <div className="w-full overflow-x-scroll mt-4 ">
+                    <div
+                      className="flex items-center gap-3 w-full md:py-7 md:hover:translate-y-[-7px]  transition-all duration-1000"
+                      style={{ transform: `translateX(-${scrolls * 38}%)` }}
+                    >
+                      {docSlot.length &&
+                        docSlot[slotIndex].map((value, index) => (
+                          <p
+                            onClick={() => setSlotTime(value.time)}
+                            className={`md:text-sm text-xs font-light md:hover:translate-y-[-5px] transition-all duration-500 flex-shrink-0 px-3 py-1 md:px-5 md:py-2 rounded-full cursor-pointer ${
+                              value.time === slotTime
+                                ? "bg-primary text-white "
+                                : "text-gray-400 border border-gray-300"
+                            }`}
+                            key={index}
+                          >
+                            {value.time.toLowerCase()}
+                          </p>
+                        ))}
+                    </div>
+                  </div>
+                  {docSlot[slotIndex].length > 5 ? (
+                    <div className="-top-10 absolute flex gap-2 right-0 ">
+                      <button
+                        onClick={prevScl}
+                        className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
+                      >
+                        <CiSquareChevLeft />
+                      </button>
+                      <button
+                        onClick={nextScl}
+                        className="text-4xl text-primary font-bold hidden md:block hover:translate-y-[-3px] transition-all duration-500"
+                      >
+                        <CiSquareChevRight />
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
+                <div className="flex justify-center sm:justify-start">
+                  <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
+                    Book an appointment
                   </button>
                 </div>
-              ) : null}
-            </div>
-
-            <div className="flex justify-center sm:justify-start">
-              <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
-                Book an appointment
-              </button>
-            </div>
+              </>
+            ) : (
+              <div className="min-h-24 mt-10">
+                <p className="text-sm text-gray-500 mb-4">No any booking slots</p>
+                <p className="text-red-600 font-medium text-lg">
+                  Unvailable Doctor
+                </p>
+              </div>
+            )}
           </div>
 
           <div>

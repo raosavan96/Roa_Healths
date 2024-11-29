@@ -1,37 +1,81 @@
 import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../../assets/assets";
 import { AdminContext } from "../../context/AdminContext";
-// import { axios } from 'axios';
+import axios from "axios";
 import { toast } from "react-toastify";
+import uploadImage from "../../Helpers/uploadImg";
 
 const AddDoctor = () => {
-  const { backendUrl, aToken } = useContext(AdminContext);
+  const { backendUrl, atoken } = useContext(AdminContext);
+
   const [doctorInfo, setDoctorInfo] = useState({
     name: "",
     email: "",
     password: "",
     experience: "1 Year",
     fees: "",
-    specialty: "General physician",
+    speciality: "General physician",
     education: "",
     address: {
       line1: "",
       line2: ""
     },
     about: "",
-    image: {}
+    image: ""
   });
 
   const handleAddDoctor = async (e) => {
     e.preventDefault();
-    
 
-    try{
+    try {
+      const formData = new FormData();
 
+      formData.append("name", doctorInfo.name);
+      formData.append("email", doctorInfo.email);
+      formData.append("password", doctorInfo.password);
+      formData.append("image", doctorInfo.image);
+      formData.append("experience", doctorInfo.experience);
+      formData.append("fees", Number(doctorInfo.fees));
+      formData.append("speciality", doctorInfo.speciality);
+      formData.append("education", doctorInfo.education);
+      formData.append("about", doctorInfo.about);
+      formData.append("address", JSON.stringify(doctorInfo.address));
 
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/add-doctor",
+        formData,
+        {
+          headers: { atoken }
+        }
+      );
 
-    } catch(error){
-      console.log(error)
+      console.log("data", data);
+
+      if (data.success) {
+        toast.success(data.message);
+        setDoctorInfo({
+          name: "",
+          email: "",
+          password: "",
+          experience: "",
+          fees: "",
+          speciality: "",
+          education: "",
+          address: {
+            line1: "",
+            line2: ""
+          },
+          about: "",
+          image: ""
+        });
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      if (error) {
+        console.log(error)
+      }
     }
   };
 
@@ -54,13 +98,17 @@ const AddDoctor = () => {
     }
   }
 
-  function handleDocImg(e) {
+  async function handleDocImg(e) {
     const docImg = e.target.files[0];
-    // console.log(docImg);
+
+    const imageDoc = await uploadImage(docImg);
+
+    const { secure_url } = imageDoc;
+
     setDoctorInfo((prev) => {
       return {
         ...prev,
-        image: docImg
+        image: secure_url
       };
     });
   }
@@ -71,7 +119,7 @@ const AddDoctor = () => {
 
   return (
     <>
-      <div className="p-3">
+      <div className="m-5">
         <form onSubmit={handleAddDoctor} className="m-5 w-full">
           <h3 className="mb-3 text-lg font-medium">Add Doctor</h3>
 
@@ -81,9 +129,7 @@ const AddDoctor = () => {
                 <img
                   className="w-20 bg-gray-100 rounded-full"
                   src={
-                    doctorInfo?.image && doctorInfo?.image instanceof File
-                      ? URL.createObjectURL(doctorInfo.image)
-                      : assets.upload_area
+                    doctorInfo?.image ? doctorInfo?.image : assets.upload_area
                   }
                   alt=""
                 />
@@ -173,10 +219,10 @@ const AddDoctor = () => {
               </div>
               <div className="w-full lg:flex-1 flex flex-col gap-4">
                 <div className="flex-1 flex flex-col gap-1">
-                  <p>Specialty</p>
+                  <p>speciality</p>
                   <select
-                    name="specialty"
-                    value={doctorInfo.specialty}
+                    name="speciality"
+                    value={doctorInfo.speciality}
                     onChange={onChangeInput}
                     className="border shadow rounded py-2 px-3"
                   >
