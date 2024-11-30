@@ -3,11 +3,12 @@ import { assets } from "./../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { toast } from "react-toastify";
+import upload_areaa from "../Components/image/upload_area.png";
 
 function Navbar() {
   const navig = useNavigate();
 
-  const { usertoken, setUserToken } = useContext(AppContext);
+  const { usertoken, setUserToken, userPro } = useContext(AppContext);
   const [showMenu, setShowMenu] = useState(false);
 
   const logoutUser = () => {
@@ -40,14 +41,14 @@ function Navbar() {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {usertoken ? (
+        {usertoken && userPro ? (
           <div className="flex cursor-pointer group relative">
             <img
-              className="h-10 w-10  md:h-12 md:w-12 rounded-full"
-              src={assets.logo}
+              className="h-10 w-10  md:h-10 md:w-10 me-4 bg-indigo-100 rounded-full"
+              src={userPro.image ? userPro.image : upload_areaa}
               alt=""
             />
-            <img className="w-[10px]" src={assets.dropdown_icon} alt=" " />
+
             <div className="hidden group-hover:block absolute  top-0 right-0 pt-16 font-medium text-gray-600 z-20 ">
               <div className="min-w-48 bg-stone-100 flex flex-col gap-4 p-4">
                 <p

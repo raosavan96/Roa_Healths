@@ -149,7 +149,7 @@ exports.userUpdateProfile = async (req, res) => {
       userInfo: "",
       success: true,
       error: false,
-      message: "User updated profile details.."
+      message: "Profile updated.."
     });
   } catch (error) {
     if (!res.headersSent) {
