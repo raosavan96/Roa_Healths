@@ -21,11 +21,11 @@ const DoctorList = () => {
         <div className="w-full flex flex-wrap gap-4 pt-5 gap-y-6">
           {doctors.map((value, index) => (
             <div
-              className="border border-indigo-200 rounded-xl shadow max-w-56 overflow-hidden cursor-pointer group"
+              className="border border-indigo-200 rounded-xl shadow max-w-56 overflow-hidden  group"
               key={index}
             >
               <img
-                className="bg-indigo-50 group-hover:bg-primary transition-all duration-300"
+                className="bg-indigo-50 group-hover:bg-primary cursor-pointer transition-all duration-300"
                 src={value?.image}
                 alt=""
               />
@@ -37,6 +37,7 @@ const DoctorList = () => {
 
                 <div className="mt-2 flex items-center gap-2 text-sm">
                   <input
+                    className="cursor-pointer"
                     onChange={() => availabilityChanged(value._id)}
                     type="checkbox"
                     checked={value.available}

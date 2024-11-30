@@ -5,6 +5,7 @@ const connectDB = require("./config/mongodb");
 const cloudinary = require("./config/cloudinary");
 const adminRoutes = require("./routes/adminRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
+const userRoutes = require("./routes/userRoutes");
 const server = express();
 
 // app config
@@ -22,6 +23,7 @@ server.use(cors());
 
 server.use("/api/admin", adminRoutes);
 server.use("/api/doctor", doctorRoutes);
+server.use("/api/user", userRoutes);
 
 // listen
 

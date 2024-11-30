@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { AppContext } from "../context/AppContext";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navig = useNavigate();
+  const { usertoken, setUserToken, backendUrl } = useContext(AppContext);
   const [state, setState] = useState("Sign Up");
   const [loginMange, setLoginMange] = useState({
     name: "",
@@ -10,6 +16,53 @@ function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    try {
+      if (state === "Sign Up") {
+        const signUpData = {
+          name: loginMange.name,
+          email: loginMange.email,
+          password: loginMange.password
+        };
+        const { data } = await axios.post(
+          backendUrl + "/api/user/register-user",
+          { signUpData }
+        );
+
+        if (data.success) {
+          toast.success(data.message);
+          localStorage.setItem("usertoken", data.token);
+          setUserToken(data.token);
+          setLoginMange({
+            name: "",
+            email: "",
+            password: ""
+          });
+          setState("Login");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const loginData = {
+          email: loginMange.email,
+          password: loginMange.password
+        };
+        const { data } = await axios.post(backendUrl + "/api/user/login-user", {
+          loginData
+        });
+
+        if (data.success) {
+          toast.success(data.message);
+          localStorage.setItem("usertoken", data.token);
+          setUserToken(data.token);
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
   };
 
   const handleInput = (e) => {
@@ -23,7 +76,11 @@ function Login() {
     });
   };
 
-  console.log("loginMange", loginMange);
+  useEffect(() => {
+    if (usertoken) {
+      navig("/");
+    }
+  }, [usertoken]);
 
   return (
     <>

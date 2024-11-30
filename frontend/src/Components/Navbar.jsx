@@ -1,12 +1,20 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { assets } from "./../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
 
 function Navbar() {
   const navig = useNavigate();
 
+  const { usertoken, setUserToken } = useContext(AppContext);
   const [showMenu, setShowMenu] = useState(false);
-  const [token, setToken] = useState(true);
+
+  const logoutUser = () => {
+    setUserToken(false);
+    localStorage.removeItem("usertoken");
+    toast.success("Logout success..");
+  };
 
   return (
     <div className="flex items-center justify-between py-1 border-b border-b-gray-400">
@@ -32,7 +40,7 @@ function Navbar() {
         </NavLink>
       </ul>
       <div className="flex items-center gap-4">
-        {token ? (
+        {usertoken ? (
           <div className="flex cursor-pointer group relative">
             <img
               className="h-10 w-10  md:h-12 md:w-12 rounded-full"
@@ -55,7 +63,7 @@ function Navbar() {
                   My Appoinment
                 </p>
                 <p
-                  onClick={() => setToken(false)}
+                  onClick={logoutUser}
                   className="hover:text-black cursor-pointer"
                 >
                   Logout

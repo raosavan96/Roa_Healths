@@ -22,10 +22,7 @@ const userSchema = new mongoose.Schema({
 
   address: {
     type: Object,
-    default: {
-      line1: "",
-      line2: ""
-    }
+    default: {}
   },
   gender: {
     type: String,

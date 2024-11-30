@@ -7,6 +7,9 @@ export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
+  const [usertoken, setUserToken] = useState(
+    localStorage.getItem("usertoken") ? localStorage.getItem("usertoken") : ""
+  );
 
   const currencySymbol = "$";
 
@@ -30,12 +33,14 @@ const AppContextProvider = (props) => {
   const value = {
     doctors,
     currencySymbol,
-    backendUrl
+    backendUrl,
+    usertoken,
+    setUserToken
   };
 
   useEffect(() => {
     getDoctorData();
-  }, []);
+  }, [doctors]);
 
   return (
     <AppContext.Provider value={value}>{props.children}</AppContext.Provider>

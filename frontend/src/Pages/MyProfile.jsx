@@ -1,35 +1,179 @@
 import React, { useState } from "react";
 import { assets } from "./../assets/assets";
+import upload_areaa from "../Components/image/upload_area.png";
+import uploadImage from "../../../admin/src/Helpers/uploadImg";
+import axios from "axios";
+import { useContext } from "react";
+import { AppContext } from "../context/AppContext";
+import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 function MyProfile() {
+  const { backendUrl, usertoken } = useContext(AppContext);
+
   const [isEdit, setIsEdit] = useState(false);
   const [userData, setUserData] = useState({
-    name: "Sawan Kumar Yadav",
-    image: assets.profile_pic,
-    email: "sawan32@gmail.com",
-    phone: "+91 9637447793",
+    name: "",
+    image: "",
+    email: "",
+    phone: "",
     address: {
-      line1: "Vill - Bhojyara Chaksu",
-      line2: "Jaipur Raj (303903)"
+      line1: "",
+      line2: ""
     },
-    gender: "Male",
-    dob: "02-09-2000"
+    gender: "",
+    dob: ""
   });
+
+
+  // const getUserProfile = async () => {
+  //   try {
+  //     const { data } = await axios.get(
+  //       backendUrl + "/api/user/get-profile",
+
+  //       {
+  //         headers: { usertoken }
+  //       }
+  //     );
+
+  //     if (data.success) {
+  //       setUserData(data.userInfo);
+  //       console.log("data",data);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     if (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
+
+  const handleProfile = async (e) => {
+    e.preventDefault();
+
+    // try {
+    //   const formData = new FormData();
+    //   formData.append("name", userData.name);
+    //   formData.append("image", userData.image);
+    //   formData.append("phone", userData.phone);
+    //   formData.append("address", JSON.stringify(userData.address));
+    //   formData.append("gender", userData.gender);
+    //   formData.append("dob", userData.dob);
+
+    //   const { data } = await axios.post(
+    //     backendUrl + "/api/user/user-update-profile",
+    //     formData,
+    //     {
+    //       headers: { usertoken }
+    //     }
+    //   );
+
+    //   if (data.success) {
+    //     toast.success(data.message);
+    //     setUserData({
+    //       name: "",
+    //       image: "",
+    //       email: "",
+    //       phone: "",
+    //       address: {
+    //         line1: "",
+    //         line2: ""
+    //       },
+    //       gender: "",
+    //       dob: ""
+    //     });
+    //   } else {
+    //     toast.error(data.message);
+    //   }
+    // } catch (error) {
+    //   console.log(error);
+    //   if (error) {
+    //     console.log(error);
+    //   }
+    // }
+  };
+
+  function handleInputs(e) {
+    const { name, value } = e.target;
+
+    if (name === "line1" || name === "line2") {
+      setUserData((preve) => {
+        return {
+          ...preve,
+          address: {
+            ...preve.address,
+            [name]: value
+          }
+        };
+      });
+    } else {
+      setUserData((preve) => {
+        return {
+          ...preve,
+          [name]: value
+        };
+      });
+    }
+  }
+
+  async function handleUserImg(e) {
+    const imageUser = e.target.files[0];
+
+    const imagU = await uploadImage(imageUser);
+
+    const { secure_url } = imagU;
+
+    setUserData((preve) => {
+      return {
+        ...preve,
+        image: secure_url
+      };
+    });
+  }
+
+  useEffect(() => {
+    if (usertoken) {
+      getUserProfile();
+    }
+  }, []);
 
   return (
     <>
-      <div>
-        <div className="max-w-lg sm:mt-0 mt-5 flex flex-col gap-5 text-sm">
-          <img className="sm:w-52  rounded" src={userData.image} alt=" " />
+      <div className="mt-5">
+        <form
+          onSubmit={handleProfile}
+          className="max-w-lg sm:mt-0 mt-5 flex flex-col gap-5 text-sm"
+        >
+          <div>
+            {isEdit ? (
+              <>
+                <label htmlFor="userImg" className=" cursor-pointer">
+                  <img
+                    className="sm:h-52 bg-indigo-50 shadow-md border"
+                    src={userData?.image ? userData?.image : upload_areaa}
+                    alt=""
+                  />
+                </label>
+                <input
+                  type="file"
+                  onChange={handleUserImg}
+                  name="image"
+                  id="userImg"
+                  hidden
+                />
+              </>
+            ) : (
+              <img className="sm:w-52  rounded" src={userData.image} alt=" " />
+            )}
+          </div>
           <div>
             {isEdit ? (
               <input
                 className="bg-gray-100 text-xl md:text-3xl font-medium max-w-56 md:max-w-80 mt-4 mb-3"
                 type="text"
                 value={userData.name}
-                onChange={(e) =>
-                  setUserData((prev) => ({ ...prev, name: e.target.value }))
-                }
+                onChange={handleInputs}
+                name="name"
               />
             ) : (
               <p className="font-medium text-xl md:text-3xl text-neutral-800 mt-4">
@@ -51,12 +195,8 @@ function MyProfile() {
                     className="bg-gray-100 max-w-52"
                     type="text"
                     value={userData.phone}
-                    onChange={(e) =>
-                      setUserData((prev) => ({
-                        ...prev,
-                        email: e.target.value
-                      }))
-                    }
+                    onChange={handleInputs}
+                    name="phone"
                   />
                 ) : (
                   <p className="text-primary">{userData.phone} </p>
@@ -68,25 +208,17 @@ function MyProfile() {
                     <input
                       className="bg-gray-100 max-w-52"
                       value={userData.address.line1}
-                      onChange={(e) =>
-                        setUserData((prev) => ({
-                          ...prev.address,
-                          line1: e.target.value
-                        }))
-                      }
+                      onChange={handleInputs}
                       type="text"
+                      name="line1"
                     />
                     <br />
                     <input
                       className="bg-gray-100 max-w-52"
                       value={userData.address.line2}
                       type="text"
-                      onChange={(e) =>
-                        setUserData((prev) => ({
-                          ...prev.address,
-                          line2: e.target.value
-                        }))
-                      }
+                      onChange={handleInputs}
+                      name="line2"
                     />
                   </p>
                 ) : (
@@ -108,12 +240,8 @@ function MyProfile() {
                   <select
                     className="max-w-20 bg-gray-100"
                     value={userData.gender}
-                    onChange={(e) =>
-                      setUserData((prev) => ({
-                        ...prev,
-                        gender: e.target.value
-                      }))
-                    }
+                    onChange={handleInputs}
+                    name="gender"
                   >
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -127,9 +255,8 @@ function MyProfile() {
                     className="bg-gray-100 max-w-28"
                     value={userData.dob}
                     type="date"
-                    onChange={(e) =>
-                      setUserData((prev) => ({ ...prev, dob: e.target.value }))
-                    }
+                    onChange={handleInputs}
+                    name="dob"
                   />
                 ) : (
                   <p className="text-gray-500">{userData.dob}</p>
@@ -146,6 +273,7 @@ function MyProfile() {
                   </button>
                 ) : (
                   <button
+                    type="text"
                     className="bg-primary text-white hover:bg-white hover:text-primary hover:border hover:border-primary active:bg-primary active:text-white px-8 py-2 rounded-full"
                     onClick={() => setIsEdit(true)}
                   >
@@ -155,7 +283,7 @@ function MyProfile() {
               </div>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </>
   );

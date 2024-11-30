@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { assets } from "../assets/assets";
 
 const Sidebar = () => {
-  const { atoken } = useContext(AdminContext);
+  const { atoken, getAllDoctors } = useContext(AdminContext);
   return (
     <>
       <div className="min-h-screen bg-white border-t">
@@ -58,6 +58,9 @@ const Sidebar = () => {
                 }`
               }
               to={`/doctor-list`}
+              onClick={() => {
+                getAllDoctors();
+              }}
             >
               <img src={assets.people_icon} alt="" />
               <p>Doctor List</p>
