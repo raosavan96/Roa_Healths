@@ -178,7 +178,7 @@ exports.bookApointment = async (req, res) => {
     }
 
     let slots_booked = docDatas.slots_booked;
-
+ 
     if (slots_booked[sloteDate]) {
       if (slots_booked[sloteDate].includes(slotTime)) {
         return res.json({
