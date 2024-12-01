@@ -18,7 +18,6 @@ export const RelatedDoctors = ({ docId, speciality }) => {
     fetchRelatedDoc();
   }, [speciality, docId, doctors]);
 
-  console.log("doctors", doctors);
 
   return (
     <>

@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
 import { CiSquareChevLeft, CiSquareChevRight } from "react-icons/ci";
 import { RelatedDoctors } from "../Components/RelatedDoctors";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 export const Appoinment = () => {
+  const navig = useNavigate();
   const { docId } = useParams();
-  const { doctors, currencySymbol } = useContext(AppContext);
+  const { doctors, currencySymbol, getDoctorData, backendUrl, usertoken } =
+    useContext(AppContext);
   const weekDay = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
   const [scrolls, setScrolls] = useState(0);
 
@@ -77,9 +81,42 @@ export const Appoinment = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(docSlot);
-  }, [docSlot]);
+  const appointmentBook = async () => {
+    if (!usertoken) {
+      toast.warn("Login to book appointment");
+      return navig("/login");
+    }
+    try {
+      const date = docSlot[slotIndex][0].datetime;
+
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      const sloteDate = day + "-" + month + "-" + year;
+
+      const { data } = await axios.post(
+        backendUrl + "/api/user/appointment-book",
+        { docId, sloteDate, slotTime },
+        {
+          headers: { usertoken }
+        }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        getDoctorData();
+        navig("/appoinment");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {}, [docSlot]);
 
   useEffect(() => {
     getAvailableSlots();
@@ -206,14 +243,19 @@ export const Appoinment = () => {
                   ) : null}
                 </div>
                 <div className="flex justify-center sm:justify-start">
-                  <button className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6">
+                  <button
+                    onClick={appointmentBook}
+                    className="bg-primary text-white text-sm font-light px-14 py-3 rounded-full my-6"
+                  >
                     Book an appointment
                   </button>
                 </div>
               </>
             ) : (
               <div className="min-h-24 mt-10">
-                <p className="text-sm text-gray-500 mb-4">No any booking slots</p>
+                <p className="text-sm text-gray-500 mb-4">
+                  No any booking slots
+                </p>
                 <p className="text-red-600 font-medium text-lg">
                   Unvailable Doctor
                 </p>
