@@ -12,14 +12,17 @@ export const Appoinment = () => {
   const { docId } = useParams();
   const { doctors, currencySymbol, getDoctorData, backendUrl, usertoken } =
     useContext(AppContext);
-  const weekDay = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-  const [scrolls, setScrolls] = useState(0);
 
-  const [doctor, setDoctor] = useState(null);
-  const [docSlot, setDocSlot] = useState([]);
-  const [slotIndex, setSlotIndex] = useState(0);
-  const [slotTime, setSlotTime] = useState("");
-
+    
+    const weekDay = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const [scrolls, setScrolls] = useState(0);
+    
+    const [doctor, setDoctor] = useState(null);
+    const [docSlot, setDocSlot] = useState([]);
+    const [slotIndex, setSlotIndex] = useState(0);
+    const [slotTime, setSlotTime] = useState("");
+    
+    // console.log("doctor",doctor.slots_booked)
   const fecthDocInfo = async () => {
     const doctorInfos = await doctors.find((doc) => doc._id === docId);
     setDoctor(doctorInfos);
@@ -57,10 +60,25 @@ export const Appoinment = () => {
           minute: "2-digit"
         });
 
-        timeSlote.push({
-          datetime: new Date(currentDate),
-          time: formettedTime
-        });
+        let day = currentDate.getDate();
+        let month = currentDate.getMonth() + 1;
+        let year = currentDate.getFullYear();
+
+        const sloteDates = day + "-" + month + "-" + year;
+        const slotTimes = formettedTime;
+
+        const isSlotAb =
+          doctor?.slots_booked[sloteDates] &&
+          doctor?.slots_booked[sloteDates].includes(slotTimes)
+            ? false
+            : true;
+
+        if (isSlotAb) {
+          timeSlote.push({
+            datetime: new Date(currentDate),
+            time: formettedTime
+          });
+        }
 
         currentDate.setMinutes(currentDate.getMinutes() + 30);
       }
@@ -93,11 +111,11 @@ export const Appoinment = () => {
       let month = date.getMonth() + 1;
       let year = date.getFullYear();
 
-      const sloteDate = day + "-" + month + "-" + year;
+      const slotDate = day + "-" + month + "-" + year;
 
       const { data } = await axios.post(
         backendUrl + "/api/user/appointment-book",
-        { docId, sloteDate, slotTime },
+        { docId, slotDate, slotTime },
         {
           headers: { usertoken }
         }
@@ -106,7 +124,7 @@ export const Appoinment = () => {
       if (data.success) {
         toast.success(data.message);
         getDoctorData();
-        navig("/appoinment");
+        navig("/my-appoinment");
       } else {
         toast.error(data.message);
       }

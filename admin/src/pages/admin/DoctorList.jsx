@@ -1,11 +1,11 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AdminContext } from "../../context/AdminContext";
 
 const DoctorList = () => {
   const { getAllDoctors, doctors, atoken, availabilityChanged } =
     useContext(AdminContext);
 
-  console.log(doctors);
+
 
   useEffect(() => {
     if (atoken) {
@@ -38,7 +38,9 @@ const DoctorList = () => {
                 <div className="mt-2 flex items-center gap-2 text-sm">
                   <input
                     className="cursor-pointer"
-                    onChange={() => availabilityChanged(value._id)}
+                    onChange={() => {
+                      availabilityChanged(value._id);
+                    }}
                     type="checkbox"
                     checked={value.available}
                   />

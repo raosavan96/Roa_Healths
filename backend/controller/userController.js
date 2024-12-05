@@ -166,7 +166,7 @@ exports.userUpdateProfile = async (req, res) => {
 
 exports.bookApointment = async (req, res) => {
   try {
-    const { userId, docId, sloteDate, slotTime } = req.body;
+    const { userId, docId, slotDate, slotTime } = req.body;
 
     const docDatas = await doctorModel.findById(docId).select("-password");
 
@@ -178,19 +178,19 @@ exports.bookApointment = async (req, res) => {
     }
 
     let slots_booked = docDatas.slots_booked;
- 
-    if (slots_booked[sloteDate]) {
-      if (slots_booked[sloteDate].includes(slotTime)) {
+
+    if (slots_booked[slotDate]) {
+      if (slots_booked[slotDate].includes(slotTime)) {
         return res.json({
           success: false,
           message: "Slote not available..."
         });
       } else {
-        slots_booked[sloteDate].push(slotTime);
+        slots_booked[slotDate].push(slotTime);
       }
     } else {
-      slots_booked[sloteDate] = [];
-      slots_booked[sloteDate].push(slotTime);
+      slots_booked[slotDate] = [];
+      slots_booked[slotDate].push(slotTime);
     }
 
     const userData = await userModel.findById(userId).select("-password");
@@ -201,9 +201,9 @@ exports.bookApointment = async (req, res) => {
       userId,
       docId,
       userData,
-      docDatas,
+      docData: docDatas,
       amount: docDatas.fees,
-      sloteDate,
+      slotDate,
       slotTime,
       date: Date.now()
     };
@@ -218,7 +218,7 @@ exports.bookApointment = async (req, res) => {
       data: "",
       success: true,
       error: false,
-      message: "Appoinment book.."
+      message: "Appointment book.."
     });
   } catch (error) {
     if (!res.headersSent) {
@@ -230,3 +230,73 @@ exports.bookApointment = async (req, res) => {
     }
   }
 };
+
+exports.listAppointment = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    const appointments = await appointmentsModel.find({ userId });
+
+    res.status(201).json({
+      appointments: appointments,
+      success: true,
+      error: false,
+      message: "All appointments"
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+exports.cancelAppointment = async (req, res) => {
+  try {
+    const { userId, appointId } = req.body;
+
+    const appointmentData = await appointmentsModel.findById(appointId);
+
+    if (appointmentData.userId !== userId) {
+      return res.json({
+        success: false,
+        message: "Unauthorized action..."
+      });
+    }
+
+    await appointmentsModel.findByIdAndUpdate(appointId, {
+      cancelled: true
+    });
+
+    const { docId, slotDate, slotTime } = appointmentData;
+
+    const doctorData = await doctorModel.findById(docId);
+
+    let slots_booked = doctorData.slots_booked;
+
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+
+    res.status(201).json({
+      success: true,
+      error: false,
+      message: "Appointment cancelled.."
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+

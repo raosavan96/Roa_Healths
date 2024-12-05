@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navig = useNavigate();
-  const { usertoken, setUserToken, backendUrl } = useContext(AppContext);
+  const { usertoken, userPro, setUserToken, backendUrl } =
+    useContext(AppContext);
   const [state, setState] = useState("Sign Up");
   const [loginMange, setLoginMange] = useState({
     name: "",
@@ -82,6 +83,15 @@ function Login() {
     }
   }, [usertoken]);
 
+  useEffect(() => {
+    if (userPro.status === true) {
+      navig("/");
+    } else {
+      localStorage.removeItem("usertoken");
+      navig("/login");
+    }
+  }, [userPro]);
+
   return (
     <>
       <div className="min-h-[80vh] flex items-center justify-center">
@@ -155,7 +165,7 @@ function Login() {
                     onClick={() => setState("Sign Up")}
                     className=" text-primary underline cursor-pointer ms-2"
                   >
-                    click hereclassName
+                    click here
                   </span>
                 </p>
               )}

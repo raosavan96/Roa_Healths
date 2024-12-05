@@ -5,6 +5,8 @@ export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
   const [doctors, setDoctors] = useState([]);
+  const [userAppointments, setUserAppointments] = useState([]);
+  const [getPatients, setgetPatients] = useState([]);
   const [atoken, setAtoken] = useState(
     localStorage.getItem("atoken") ? localStorage.getItem("atoken") : ""
   );
@@ -43,13 +45,56 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  const getAllPatients = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/admin/get-all-patients",
+        { headers: { atoken } }
+      );
+
+      if (data.success) {
+        setgetPatients(data.patients);
+      } else {
+        toast.error(error.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  const userAppointment = async () => {
+    try {
+      const { data } = await axios.get(
+        backendUrl + "/api/admin/user-appointments"
+      );
+      if (data.success) {
+        setUserAppointments(data.userAppoins);
+      } else {
+        toast.error(error.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    userAppointment();
+  }, [userAppointments]);
+
+  useEffect(() => {
+    getAllPatients();
+  }, [getPatients]);
+
   const value = {
     atoken,
     setAtoken,
     backendUrl,
     doctors,
     getAllDoctors,
-    availabilityChanged
+    availabilityChanged,
+    userAppointment,
+    userAppointments,
+    getPatients
   };
 
   return (

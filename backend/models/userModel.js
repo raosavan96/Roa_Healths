@@ -36,6 +36,10 @@ const userSchema = new mongoose.Schema({
   phone: {
     type: String,
     default: "000000000"
+  },
+  status: {
+    type: Boolean,
+    default: true
   }
 });
 

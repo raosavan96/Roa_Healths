@@ -2,6 +2,8 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const doctorModel = require("../models/doctorModel");
+const appointmentsModel = require("../models/appointmentsModel");
+const userModel = require("../models/userModel");
 
 //Admin login
 
@@ -91,7 +93,7 @@ exports.addDoctor = async (req, res) => {
       about,
       fees,
       image,
-      address,
+      address: JSON.parse(address),
       date: Date.now()
     });
 
@@ -126,6 +128,107 @@ exports.allDoctors = async (req, res) => {
       success: true,
       error: false,
       message: "success find all doctors"
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+exports.userAppoinments = async (req, res) => {
+  try {
+    const userAppointments = await appointmentsModel.find();
+    res.status(201).json({
+      userAppoins: userAppointments,
+      success: true,
+      error: false,
+      message: "success find all doctors"
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+exports.deleteAppointments = async (req, res) => {
+  try {
+    const { id } = req.body;
+
+    const apointment = await appointmentsModel.findById(id);
+
+    await appointmentsModel.findByIdAndUpdate(id, {
+      cancelled: true
+    });
+
+    const { docId, slotDate, slotTime } = apointment;
+
+    const doctorData = await doctorModel.findById(docId);
+
+    let slots_booked = doctorData.slots_booked;
+
+    slots_booked[slotDate] = slots_booked[slotDate].filter(
+      (e) => e !== slotTime
+    );
+
+    await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+
+    res.status(201).json({
+      success: true,
+      error: false,
+      message: "Appointment cancel.."
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+exports.getAllPatients = async (req, res) => {
+  try {
+    const getPatient = await userModel.find().select("-password");
+    res.status(201).json({
+      patients: getPatient,
+      success: true,
+      error: false
+    });
+  } catch (error) {
+    if (!res.headersSent) {
+      res.status(500).json({
+        message: error.message,
+        error: true,
+        success: false
+      });
+    }
+  }
+};
+
+exports.actionPatient = async (req, res) => {
+  try {
+    const { id, active } = req.body;
+
+    await userModel.findByIdAndUpdate(id, {
+      status: active
+    });
+
+    res.status(201).json({
+      success: true,
+      error: false,
+      message: "Updated Patients.."
     });
   } catch (error) {
     if (!res.headersSent) {

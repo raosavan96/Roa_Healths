@@ -20,7 +20,7 @@ const Sidebar = () => {
               }
               to={`/admin-dashboard`}
             >
-              <img src={assets.home_icon} alt="" />
+              <img className="w-8" src={assets.home_icon} alt="" />
               <p>Dashboard</p>
             </NavLink>
             <NavLink
@@ -33,7 +33,7 @@ const Sidebar = () => {
               }
               to={`/all-appointments`}
             >
-              <img src={assets.appointment_icon} alt="" />
+              <img className="w-8" src={assets.appointment_icon} alt="" />
               <p>Appointments</p>
             </NavLink>
             <NavLink
@@ -46,7 +46,7 @@ const Sidebar = () => {
               }
               to={`/add-doctor`}
             >
-              <img src={assets.add_icon} alt="" />
+              <img className="w-8" src={assets.add_icon} alt="" />
               <p>Add Doctor</p>
             </NavLink>
             <NavLink
@@ -62,8 +62,24 @@ const Sidebar = () => {
                 getAllDoctors();
               }}
             >
-              <img src={assets.people_icon} alt="" />
+              <img className="w-8" src={assets.people_icon} alt="" />
               <p>Doctor List</p>
+            </NavLink>
+            <NavLink
+              className={({ isActive }) =>
+                `flex justify-start items-start gap-3 py-3 px-3 md:px-9 md:min-w-72 cursor-pointer ${
+                  isActive
+                    ? "bg-slate-200 border-r-4 border-primary text-slate-700"
+                    : ""
+                }`
+              }
+              to={`/patients-list`}
+              onClick={() => {
+                getAllDoctors();
+              }}
+            >
+              <img className="w-8" src={assets.patients_icon} alt="" />
+              <p>Patients</p>
             </NavLink>
           </ul>
         )}
