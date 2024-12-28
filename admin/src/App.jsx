@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Login from "./pages/login";
+import Login from "./pages/Login";
 import { AdminContext } from "./context/AdminContext";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
