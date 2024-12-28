@@ -22,7 +22,6 @@ export const Appoinment = () => {
     const [slotIndex, setSlotIndex] = useState(0);
     const [slotTime, setSlotTime] = useState("");
     
-    // console.log("doctor",doctor.slots_booked)
   const fecthDocInfo = async () => {
     const doctorInfos = await doctors.find((doc) => doc._id === docId);
     setDoctor(doctorInfos);

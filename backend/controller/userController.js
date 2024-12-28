@@ -129,7 +129,7 @@ exports.userUpdateProfile = async (req, res) => {
   try {
     const { userId, name, phone, address, dob, gender, image } = req.body;
 
-    console.log(req.body);
+    
 
     if (!name || !phone || !address || !dob || !gender || !image) {
       return res.json({

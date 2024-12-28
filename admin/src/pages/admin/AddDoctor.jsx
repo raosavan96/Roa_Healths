@@ -49,7 +49,6 @@ const AddDoctor = () => {
         }
       );
 
-      console.log("data", data);
 
       if (data.success) {
         toast.success(data.message);

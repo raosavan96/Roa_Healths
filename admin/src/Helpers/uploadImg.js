@@ -1,7 +1,7 @@
 const url = `https://api.cloudinary.com/v1_1/dbqczbaju/image/upload`;
 
 const uploadImage = async (image) => {
-    console.log(image)
+ 
   if (image) {
     const formData = new FormData();
     formData.append("file", image);
