@@ -182,15 +182,15 @@ function MyProfile() {
                   {isEdit ? (
                     <p>
                       <input
-                        className="bg-gray-100 max-w-52"
-                        value={userPro.address.line1}
+                        className="bg-gray-100 max-w-52 px-2"
+                        value={userPro?.address?.line1}
                         onChange={handleInputs}
                         type="text"
                         name="line1"
                       />
                     </p>
                   ) : (
-                    <p className="text-gray-500">{userPro.address.line1}</p>
+                    <p className="text-gray-500">{userPro?.address?.line1}</p>
                   )}
                 </div>
               </div>
